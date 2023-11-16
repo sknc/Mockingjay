@@ -5,6 +5,7 @@
 #include "bithacks.h"
 #include "math.h"
 #include "limits.h"
+#include "stdlib.h"
 #include <algorithm>
 #include <map>
 #include <set>
@@ -43,6 +44,7 @@ class MockingjayReplPolicy: public ReplPolicy {
                     sampleMiss = false;
                     pred = set_timestamps[set] - s[i].timestamp;
                     s[i].timestamp = set_timestamps[set];
+                    update_rdp(id, req->pc, pred, sampleMiss);
                 }
                 else if(!s[i].valid)
                 {
@@ -54,9 +56,6 @@ class MockingjayReplPolicy: public ReplPolicy {
             }
             if(sampleMiss)
                 sampled_cache_replacement(id, req, set);
-            else
-                update_rdp(id, req->pc, pred, false);
-            //}
         }
 
         void sampled_cache_replacement(uint32_t id, const MemReq* req, uint32_t set) {
@@ -115,9 +114,10 @@ class MockingjayReplPolicy: public ReplPolicy {
             for(uint32_t i = 0; i < numSets; i++)
             {
                 set_timestamps[i] = 0;
-                sampled_cache[i] = new SampledEntry[80];
+                SampledEntry* s = new SampledEntry[80];
                 for(int j = 0; j < 80; i++)
-                    sampled_cache[i][j].valid = false;
+                   s[j] = {false, 0, 0, 0};
+                sampled_cache[i] = s;
 
             } 
         }
@@ -135,7 +135,7 @@ class MockingjayReplPolicy: public ReplPolicy {
                 if(i != id)
                     etr_counters[i]--;
             }
-            //update_sampled_cache(id, req);
+            update_sampled_cache(id, req);
             
         }
 
@@ -153,10 +153,15 @@ class MockingjayReplPolicy: public ReplPolicy {
                     bestCand = i;
                     bestScore = abs(etr_counters[i]);
                 }
+                else if(abs(etr_counters[i] == bestScore))
+                {
+                    if(etr_counters[i] < 0)
+                        bestCand = i;
+                }
             }
             printf("Prediction: %x\n", bestCand);
             return bestCand;
-            
+            return rand() % numLines + 1;
         }
         DECL_RANK_BINDINGS
 };
