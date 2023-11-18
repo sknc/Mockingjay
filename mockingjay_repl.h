@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <iostream>
 
 class MockingjayReplPolicy: public ReplPolicy {
     private:
@@ -33,11 +34,11 @@ class MockingjayReplPolicy: public ReplPolicy {
             //if(sampled_sets.find(set) != sampled_sets.end()) {
             set_timestamps[set]++;
             SampledEntry* s = sampled_cache[set];
-            set = req->lineAddr & 0x0F;
+            uint32_t sampled_set = req->lineAddr & 0x0F;
             uint32_t tag = req->lineAddr & 0x3FF8;
             bool sampleMiss = true;
             uint8_t pred;
-            for(uint32_t i = set * 16; i < set * 16 + 5; i++)
+            for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++)
             {
                 if(s[i].valid && (s[i].address & 0x3FF8) == tag)
                 {
@@ -55,13 +56,13 @@ class MockingjayReplPolicy: public ReplPolicy {
                 }
             }
             if(sampleMiss)
-                sampled_cache_replacement(id, req, set);
+                sampled_cache_replacement(id, req, sampled_set);
         }
 
         void sampled_cache_replacement(uint32_t id, const MemReq* req, uint32_t set) {
             uint32_t bestCand = -1;
             uint32_t bestScore = UINT32_MAX;
-            for(uint32_t i = set * 16; i < set * 16 + 5; i++)
+            for(uint32_t i = set * 5; i < set * 5 + 5; i++)
             {
                 if(!sampled_cache[set][i].valid)
                 {
@@ -114,10 +115,9 @@ class MockingjayReplPolicy: public ReplPolicy {
             for(uint32_t i = 0; i < numSets; i++)
             {
                 set_timestamps[i] = 0;
-                SampledEntry* s = new SampledEntry[80];
-                for(int j = 0; j < 80; i++)
-                   s[j] = {false, 0, 0, 0};
-                sampled_cache[i] = s;
+                sampled_cache[i] = new SampledEntry[80];
+                for(int j = 0; j < 80; j++)
+                   sampled_cache[i][j] = {false, 0, 0, 0};
 
             } 
         }
@@ -127,7 +127,6 @@ class MockingjayReplPolicy: public ReplPolicy {
         }
 
         void update(uint32_t id, const MemReq* req) {
-            printf("PC value: %lu\n", req->lineAddr);
             HashFamily* hf = new IdHashFamily;
             uint32_t set = hf->hash(0, req->lineAddr) & ((numLines / ways) - 1);
             for(uint32_t i = set * ways; i < set * ways + ways; i++)
@@ -159,7 +158,6 @@ class MockingjayReplPolicy: public ReplPolicy {
                         bestCand = i;
                 }
             }
-            printf("Prediction: %x\n", bestCand);
             return bestCand;
             return rand() % numLines + 1;
         }
