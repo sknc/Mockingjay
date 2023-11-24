@@ -1,6 +1,6 @@
-[H] Starting zsim, built Sun Nov 19 14:55:03 CST 2023 (rev no git repo)
+[H] Starting zsim, built Fri Nov 24 14:44:54 CST 2023 (rev no git repo)
 [H] Creating global segment, 1024 MBs
-[H] Global segment shmid = 8912953
+[H] Global segment shmid = 9273379
 [H] Deadlock detection ON
 [S 0] Started instance
 [S 0] Started RR scheduler, quantum=10000 phases
@@ -30,14 +30,14 @@
 [S 0] HDF5 backend: Created table, 3192 bytes/record, 1 records/write
 [S 0] Initialization complete
 [H] Attached to global heap
-[S 0] Started process, PID 278610
+[S 0] Started process, PID 53391
 [S 0] procMask: 0x0
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 0
 [S 0] vDSO info initialized
 [S 0] FF thread 0 starting
 [S 0] Started contention simulation thread 0
+[S 0] FF control Thread TID 53396
 [S 0] Started scheduler watchdog thread
-[S 0] FF control Thread TID 278615
 PARSEC Benchmark Suite Version 2.1
 [HOOKS] PARSEC Hooks Version 1.2
 Num of Options: 65536
@@ -57,7 +57,7 @@ Size of data: 2621440
 [S 0] Thread 11 starting
 [S 0] Detected possible stall due to fake leaves (1 current)
 [S 0]  [0/0] futex (202) @ 0x412562
-[S 0] Blacklisting from future fake leaves: [0] futex @ 0x412562 | arg0 0x7fffe31619d0 arg1 0x0
+[S 0] Blacklisting from future fake leaves: [0] futex @ 0x412562 | arg0 0x7fffe313a9d0 arg1 0x0
 [S 0] Thread 10 finished
 [S 0] Thread 8 finished
 [S 0] Thread 9 finished
@@ -73,11 +73,11 @@ Size of data: 2621440
 [S 0] ROI_END, entering fast-forward
 [S 0] Thread 0 entering fast-forward
 [ZSIM-HOOKS] ROI end
-[HOOKS] Total time spent in ROI: 0.447s
+[HOOKS] Total time spent in ROI: 0.446s
 [HOOKS] Terminating
 [S 0] Shadow/NOP thread 0 finished
 [S 0] Finished, code 0
 [S 0] Dumping termination stats
 [S 0] Finished scheduler watchdog thread
-[H] Child 278610 done
+[H] Child 53391 done
 [H] All children done, exiting

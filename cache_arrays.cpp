@@ -26,6 +26,8 @@
 #include "cache_arrays.h"
 #include "hash.h"
 #include "repl_policies.h"
+#include "rrip_repl.h"
+#include "mockingjay_repl.h"
 
 /* Set-associative array implementation */
 
