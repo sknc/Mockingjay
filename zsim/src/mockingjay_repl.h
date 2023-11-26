@@ -20,7 +20,7 @@ class MockingjayReplPolicy: public ReplPolicy {
         struct SampledEntry {
             bool valid;
             uint16_t address_tag;
-            Address pc_signature;
+            uint16_t pc_signature;
             uint8_t timestamp;
         };
         std::map<uint32_t, SampledEntry*> sampled_cache;
