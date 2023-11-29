@@ -150,6 +150,7 @@ void OOOCore::store(Address addr, Address pc) {
 // Predication is rare enough that we don't need to model it perfectly to be accurate (i.e. the uops still execute, retire, etc), but this is needed for correctness.
 void OOOCore::predFalseMemOp() {
     // I'm going to go out on a limb and assume just loads are predicated (this will not fail silently if it's a store)
+    loadPcs[loads] = -1L;
     loadAddrs[loads++] = -1L;
 }
 
@@ -269,7 +270,7 @@ inline void OOOCore::bbl(Address bblAddr, BblInfo* bblInfo) {
 
                     // Wait for all previous store addresses to be resolved
                     dispatchCycle = MAX(lastStoreAddrCommitCycle+1, dispatchCycle);
-                    Address pc = loadAddrs[loadIdx];
+                    Address pc = loadPcs[loadIdx];
                     Address addr = loadAddrs[loadIdx++];
                     uint64_t reqSatisfiedCycle = dispatchCycle;
                     if (addr != ((Address)-1L)) {

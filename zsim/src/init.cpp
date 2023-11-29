@@ -172,7 +172,7 @@ BaseCache* BuildCacheBank(Config& config, const string& prefix, g_string& name, 
         // add your SRRIP construction code here
         rp = new SRRIPReplPolicy(numLines, rpvMax);
     } else if (replType == "Mockingjay") {
-        rp = new MockingjayReplPolicy(numLines, ways);
+        rp = new MockingjayReplPolicy(numLines, ways, hf);
     } else if (replType == "WayPart" || replType == "Vantage" || replType == "IdealLRUPart") {
         if (replType == "WayPart" && arrayType != "SetAssoc") panic("WayPart replacement requires SetAssoc array");
 
