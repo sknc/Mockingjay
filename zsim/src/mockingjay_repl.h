@@ -30,112 +30,69 @@ class MockingjayReplPolicy: public ReplPolicy {
         std::map<uint16_t, uint8_t> rdp;
         int8_t* etr_counters;
         uint8_t* set_timestamps;
-        //uint8_t* set_clocks;
         void update_sampled_cache(uint32_t id, const MemReq* req, uint32_t set) {
-            if(sampled_sets.find(set) == sampled_sets.end()) {
-                SampledEntry* s = new SampledEntry[80];
-                for(int i = 0; i < 80; i++) {
-                    s[i] = {false, 0, 0, 0};
-                }
-                sampled_cache[set] = s;
-                sampled_sets.insert(set);
-            }
-            //set_clocks[set]++;
-            /*
-            std::cout << '\n';
-            if(sampled_sets.find(set) == sampled_sets.end()) {
-                uint8_t least_recent_timestamp = set_timestamps[0];
-                uint32_t least_recent_set = 0;
-                for(int i = 0; i < sizeof(set_timestamps)/sizeof(uint8_t); i++) {
-                    if(set_timestamps[i] < least_recent_timestamp && sampled_sets.find(i) != sampled_sets.end()) {
-                        least_recent_timestamp = set_timestamps[i];
-                        least_recent_set = i;
-                    }
-                }
-                if(least_recent_timestamp < set_timestamps[set]) {
-                    delete sampled_sets[least_recent_set];
-                    sampled_cache.erase(least_recent_set);
-                    sampled_set.erase(least_recent_set);
-                    SampledEntry* s = new SampledEntry[80];
-                    for(int i = 0; i < 80; i++) {
-                        s[i].valid = false;
-                    }
-                    sampled_cache[set] = s;
-                    sampled_sets.insert(set);
-                }
-                set_timestamps[set]++;
-            }
-            */
-            //if(sampled_sets.find(set) != sampled_sets.end()) {
-                //set_timestamps[set]++;
-            uint16_t numShift = log2(numLines / ways);
-            uint32_t sampled_set = (req->lineAddr >> numShift) & 0xF;
-            uint64_t tag = ((req->lineAddr >> numShift) >> 4) & 0x3FF0;
             uint16_t new_pc_signature = cache_miss ? ((req->pc & 0x7FF) << 1): (((req->pc & 0x7FF) << 1) + 1);
-            bool sampleMiss = true;
-            bool invalidEntries = false;
-            uint8_t pred;
-            //std::cout << "Line: " << id << " " << "LLC Set: " << set << " " << "Sampled Cache Set: " << sampled_set << " " << "Address: " << req->lineAddr << " " << "Tag: " << tag << " " << "PC: " << req->pc << " " << "Set timestamp: " << +set_timestamps[set] << std::boolalpha << " Cache miss: " << cache_miss << std::endl;
-            for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
-                //std::cout << "Tag: " << sampled_cache[set][i].address_tag << " " << std::boolalpha << sampled_cache[set][i].valid << " " << "Last access timestamp: " << +sampled_cache[set][i].timestamp << std::endl;
-                if(sampled_cache[set][i].valid) {
-                    if(set_timestamps[set] < sampled_cache[set][i].timestamp) {
-                        uint16_t overflow = (1 << 8) + set_timestamps[set];
-                        pred = overflow - sampled_cache[set][i].timestamp;
-                    }
-                    else
-                        pred = set_timestamps[set] - sampled_cache[set][i].timestamp;
-                    if(pred > INT8_MAX + 1) {
-                        update_rdp(id, sampled_cache[set][i].pc_signature, pred, false);
-                        sampled_cache[set][i].valid = false;
-                    }
-                    else {
-                        if(sampled_cache[set][i].address_tag == tag) {
-                            sampleMiss = false;
-                            update_rdp(id, sampled_cache[set][i].pc_signature, pred, sampleMiss);
-                            sampled_cache[set][i].timestamp = set_timestamps[set];
-                            sampled_cache[set][i].pc_signature = new_pc_signature;
+            if(sampled_sets.find(set) != sampled_sets.end()) {
+                uint16_t numShift = log2(numLines / ways);
+                uint32_t sampled_set = (req->lineAddr >> numShift) & 0xF;
+                uint64_t tag = ((req->lineAddr >> numShift) >> 4) & 0x3FF0;
+                bool sampleMiss = true;
+                bool invalidEntries = false;
+                uint8_t pred;
+                for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
+                    if(sampled_cache[set][i].valid) {
+                        if(set_timestamps[set] < sampled_cache[set][i].timestamp) {
+                            uint16_t overflow = (1 << 8) + set_timestamps[set];
+                            pred = overflow - sampled_cache[set][i].timestamp;
+                        }
+                        else
+                            pred = set_timestamps[set] - sampled_cache[set][i].timestamp;
+                        if(pred > INT8_MAX + 1) {
+                            update_rdp(id, sampled_cache[set][i].pc_signature, pred, false);
+                            sampled_cache[set][i].valid = false;
+                        }
+                        else {
+                            if(sampled_cache[set][i].address_tag == tag) {
+                                sampleMiss = false;
+                                update_rdp(id, sampled_cache[set][i].pc_signature, pred, sampleMiss);
+                                sampled_cache[set][i].timestamp = set_timestamps[set];
+                                sampled_cache[set][i].pc_signature = new_pc_signature;
+                            }
                         }
                     }
                 }
-            }
-            //std::cout << '\n';
-            if(sampleMiss) {
-                uint32_t bestCand = -1;
-                uint32_t bestScore = UINT32_MAX;
-                for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
-                    if(!sampled_cache[set][i].valid) {
-                        sampled_cache[set][i].valid = true;
-                        sampled_cache[set][i].address_tag = tag;
-                        sampled_cache[set][i].pc_signature = new_pc_signature;
-                        sampled_cache[set][i].timestamp = set_timestamps[set];
-                        invalidEntries = true;
-                        break;
+                if(sampleMiss) {
+                    uint32_t bestCand = -1;
+                    uint32_t bestScore = UINT32_MAX;
+                    for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
+                        if(!sampled_cache[set][i].valid) {
+                            sampled_cache[set][i].valid = true;
+                            sampled_cache[set][i].address_tag = tag;
+                            sampled_cache[set][i].pc_signature = new_pc_signature;
+                            sampled_cache[set][i].timestamp = set_timestamps[set];
+                            invalidEntries = true;
+                            break;
+                        }
+                        else {
+                            bestCand = (sampled_cache[set][i].timestamp < bestScore) ? i : bestCand;
+                            bestScore = MIN(sampled_cache[set][i].timestamp, bestScore);
+                        }
                     }
-                    else {
-                        bestCand = (sampled_cache[set][i].timestamp < bestScore) ? i : bestCand;
-                        bestScore = MIN(sampled_cache[set][i].timestamp, bestScore);
+                    if(!invalidEntries) {
+                        pred = INT8_MAX;
+                        update_rdp(id, sampled_cache[set][bestCand].pc_signature, pred, sampleMiss);
+                        sampled_cache[set][bestCand].pc_signature = new_pc_signature;
+                        sampled_cache[set][bestCand].timestamp = set_timestamps[set];
                     }
                 }
-                if(!invalidEntries) {
-                    pred = INT8_MAX;
-                    update_rdp(id, sampled_cache[set][bestCand].pc_signature, pred, sampleMiss);
-                    sampled_cache[set][bestCand].pc_signature = new_pc_signature;
-                    sampled_cache[set][bestCand].timestamp = set_timestamps[set];
-                }
+                set_timestamps[set]++;
             }
-            set_timestamps[set]++;
             if(rdp.count(new_pc_signature)) {
                 if(rdp[new_pc_signature] > 104) 
                     etr_counters[id] = INT8_MAX;
-                else
-                    etr_counters[id] = rdp[new_pc_signature];
-            }
             else
-                etr_counters[id] = 0;
-            //std::cout << "Line: " << id << " ETR: " << +etr_counters[id] << " PC: " << new_pc_signature << std::endl;
-            //std::cout << '\n';
-            //}
+                etr_counters[id] = rdp[new_pc_signature];
+            }
         }
 
         void update_rdp(uint32_t id, uint16_t last_pc_signature, uint8_t pred, bool sampleMiss) { 
@@ -162,8 +119,6 @@ class MockingjayReplPolicy: public ReplPolicy {
                 else
                     rdp[last_pc_signature] = pred;
             }
-            //std::cout << "Line: " << id << " PC: " << last_pc_signature << " RDP: " << +rdp[last_pc_signature] << std::endl;
-            //std::cout << '\n';
         }
 
     public:
@@ -173,10 +128,8 @@ class MockingjayReplPolicy: public ReplPolicy {
                 etr_counters[i] = INT8_MIN;
             }
             uint32_t numSets = numLines / ways;
-            //set_clocks = gm_calloc<uint8_t>(numSets);
             set_timestamps = gm_calloc<uint8_t>(numSets);
             cache_miss = false;
-            /*
             std::vector<uint32_t> v;
             for(uint32_t i = 0; i < numSets; i++) {
                 v.push_back(i);
@@ -193,7 +146,6 @@ class MockingjayReplPolicy: public ReplPolicy {
                 }
             }
             v = std::vector<uint32_t>();
-            */
         }
 
         ~MockingjayReplPolicy(){
@@ -201,13 +153,10 @@ class MockingjayReplPolicy: public ReplPolicy {
         }
         void update(uint32_t id, const MemReq* req) {
             uint32_t set = hf->hash(0, req->lineAddr) & ((numLines / ways) - 1);
-            //if(set_clocks[set] == 8) {
-                //set_clocks[set] = 0;
-                for(uint32_t i = set * ways; i < set * ways + ways; i++) {
-                    if(etr_counters[i] < INT8_MAX && etr_counters[i] > INT8_MIN && i != id)
-                        etr_counters[i]--;
-                }
-            //}
+            for(uint32_t i = set * ways; i < set * ways + ways; i++) {
+                if(etr_counters[i] < INT8_MAX && etr_counters[i] > INT8_MIN && i != id)
+                    etr_counters[i]--;
+            }
             update_sampled_cache(id, req, set);
             if(cache_miss)
                 cache_miss = false;
@@ -221,11 +170,8 @@ class MockingjayReplPolicy: public ReplPolicy {
         template <typename C> uint32_t rank(const MemReq* req, C cands) {
             uint32_t bestCand = *cands.begin();
             uint32_t bestScore = abs(etr_counters[bestCand]);
-            // set = hf->hash(0, req->lineAddr) & ((numLines/ways) - 1);
-            //std::cout << "LLC Set #: " << set << std::endl;
             for (auto ci = cands.begin(); ci != cands.end(); ci.inc()) {
                 uint32_t i = *ci;
-                //std::cout << "LLC Line #: " << *ci << " " << "ETR: " << +etr_counters[i] << std::endl;
                 if(abs(etr_counters[i]) > bestScore) {
                     bestCand = i;
                     bestScore = abs(etr_counters[i]);
@@ -233,7 +179,6 @@ class MockingjayReplPolicy: public ReplPolicy {
                 else if(abs(etr_counters[i]) == bestScore && abs(etr_counters[i]) < 0)
                     bestCand = i;
             }
-            //std::cout << '\n';
             return bestCand;
         }
         DECL_RANK_BINDINGS
