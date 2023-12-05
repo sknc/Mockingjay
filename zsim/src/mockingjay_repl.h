@@ -81,6 +81,7 @@ class MockingjayReplPolicy: public ReplPolicy {
                     if(!invalidEntries) {
                         pred = INT8_MAX;
                         update_rdp(id, sampled_cache[set][bestCand].pc_signature, pred, sampleMiss);
+                        sampled_cache[set][bestCand].address_tag = tag;
                         sampled_cache[set][bestCand].pc_signature = new_pc_signature;
                         sampled_cache[set][bestCand].timestamp = set_timestamps[set];
                     }
