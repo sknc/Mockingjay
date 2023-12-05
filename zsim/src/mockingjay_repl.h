@@ -22,7 +22,7 @@ class MockingjayReplPolicy: public ReplPolicy {
         bool cache_miss;
         struct SampledEntry {
             bool valid;
-            uint64_t address_tag;
+            uint16_t address_tag;
             uint16_t pc_signature;
             uint8_t timestamp;
         };
