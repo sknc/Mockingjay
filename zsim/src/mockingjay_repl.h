@@ -22,7 +22,7 @@ class MockingjayReplPolicy: public ReplPolicy {
         bool cache_miss;
         struct SampledEntry {
             bool valid;
-            uint64_t address_tag;
+            uint16_t address_tag;
             uint16_t pc_signature;
             uint8_t timestamp;
         };
@@ -81,6 +81,7 @@ class MockingjayReplPolicy: public ReplPolicy {
                     if(!invalidEntries) {
                         pred = INT8_MAX;
                         update_rdp(id, sampled_cache[set][bestCand].pc_signature, pred, sampleMiss);
+                        sampled_cache[set][bestCand].address_tag = tag;
                         sampled_cache[set][bestCand].pc_signature = new_pc_signature;
                         sampled_cache[set][bestCand].timestamp = set_timestamps[set];
                     }
