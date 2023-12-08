@@ -2,6 +2,7 @@
 Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9773195. Using zsim for simulation. 
 
 # Project Structure
+```
 .
 ├── README.md
 ├── benchmarks.z01
@@ -5242,7 +5243,7 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     ├── zsim-ev.h5
     ├── zsim.h5
     └── zsim.out
-
+```
 # Compilation and run process
 
 ##### 1. Apply a path file for cse server
