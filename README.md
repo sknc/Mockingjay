@@ -38,4 +38,4 @@ $ ./term_project_runscript <suite> <benchmark> <repl_policy>
 
 
 
-###### Go to zsim/outputs/term_project to view outputs
+##### Go to zsim/outputs/term_project to view outputs
