@@ -1,5 +1,5 @@
 # Mockingjay
-Mimicking of Belady's min algorithm
+Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9773195
 ##### 1. Apply a path file for cse server
 
 ```
