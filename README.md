@@ -1,5 +1,8 @@
 # Mockingjay
-Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9773195
+Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9773195. Using zsim for simulation. 
+
+# Compilation process
+
 ##### 1. Apply a path file for cse server
 
 ```
@@ -35,4 +38,4 @@ $ ./term_project_runscript <suite> <benchmark> <repl_policy>
 
 
 
-###### For more information, check `zsim/README.md`
+###### Go to zsim/outputs/term_project to view outputs
