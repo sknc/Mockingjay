@@ -10,6 +10,7 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
 ├── benchmarks.z03
 ├── benchmarks.zip
 ├── cse_server.patch
+├── out.txt
 ├── setup_env
 ├── tools
 │   ├── local
@@ -4438,164 +4439,9 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │       └── stat.template
     ├── out.cfg
     ├── outputs
-    │   ├── LFU
-    │   │   ├── blackscholes_8c_simlarge
-    │   │   │   ├── blackscholes.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── bzip2
-    │   │   │   ├── bzip2.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── calculix
-    │   │   │   ├── calculix.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── canneal_8c_simlarge
-    │   │   │   ├── canneal.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── fluidanimate_8c_simlarge
-    │   │   │   ├── fluidanimate.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── gcc
-    │   │   │   ├── gcc.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── hmmer
-    │   │   │   ├── heartbeat
-    │   │   │   ├── hmmer.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── lbm
-    │   │   │   ├── heartbeat
-    │   │   │   ├── lbm.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── leslie3d
-    │   │   │   ├── heartbeat
-    │   │   │   ├── leslie3d.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── libquantum
-    │   │   │   ├── heartbeat
-    │   │   │   ├── libquantum.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── milc
-    │   │   │   ├── heartbeat
-    │   │   │   ├── milc.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── namd
-    │   │   │   ├── heartbeat
-    │   │   │   ├── namd.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── sjeng
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── sjeng.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── soplex
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── soplex.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── streamcluster_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── streamcluster.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── swaptions_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── swaptions.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── x264_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── x264.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   └── xalan
-    │   │       ├── heartbeat
-    │   │       ├── out.cfg
-    │   │       ├── xalan.log
-    │   │       ├── zsim-cmp.h5
-    │   │       ├── zsim-ev.h5
-    │   │       ├── zsim.h5
-    │   │       └── zsim.out
     │   ├── LRU
     │   │   ├── blackscholes_8c_simlarge
     │   │   │   ├── blackscholes.log
-    │   │   │   ├── blackscholes_8c_simlarge.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── bodytrack_8c_simlarge
-    │   │   │   ├── bodytrack.log
-    │   │   │   ├── bodytrack_8c_simlarge.log
     │   │   │   ├── heartbeat
     │   │   │   ├── out.cfg
     │   │   │   ├── zsim-cmp.h5
@@ -4604,14 +4450,6 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │   │   │   └── zsim.out
     │   │   ├── bzip2
     │   │   │   ├── bzip2.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── cactusADM
-    │   │   │   ├── cactusADM.log
     │   │   │   ├── heartbeat
     │   │   │   ├── out.cfg
     │   │   │   ├── zsim-cmp.h5
@@ -4629,15 +4467,6 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │   │   ├── canneal_8c_simlarge
     │   │   │   ├── canneal.log
     │   │   │   ├── canneal_8c_simlarge.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── dedup_8c_simlarge
-    │   │   │   ├── dedup.log
-    │   │   │   ├── dedup_8c_simlarge.log
     │   │   │   ├── heartbeat
     │   │   │   ├── out.cfg
     │   │   │   ├── zsim-cmp.h5
@@ -4693,14 +4522,6 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │   │   │   ├── zsim-ev.h5
     │   │   │   ├── zsim.h5
     │   │   │   └── zsim.out
-    │   │   ├── mcf
-    │   │   │   ├── heartbeat
-    │   │   │   ├── mcf.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
     │   │   ├── milc
     │   │   │   ├── heartbeat
     │   │   │   ├── milc.log
@@ -4729,15 +4550,6 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │   │   │   ├── heartbeat
     │   │   │   ├── out.cfg
     │   │   │   ├── soplex.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── streamcluster_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── streamcluster.log
-    │   │   │   ├── streamcluster_8c_simlarge.log
     │   │   │   ├── zsim-cmp.h5
     │   │   │   ├── zsim-ev.h5
     │   │   │   ├── zsim.h5
@@ -4768,185 +4580,7 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     │   │       ├── zsim-ev.h5
     │   │       ├── zsim.h5
     │   │       └── zsim.out
-    │   ├── Mockingjay
-    │   │   ├── blackscholes_8c_simlarge
-    │   │   │   ├── blackscholes.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── bodytrack_8c_simlarge
-    │   │   │   ├── bodytrack.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── bzip2
-    │   │   │   ├── bzip2.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── cactusADM
-    │   │   │   ├── cactusADM.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── calculix
-    │   │   │   ├── calculix.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── canneal_8c_simlarge
-    │   │   │   ├── canneal.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── dedup_8c_simlarge
-    │   │   │   ├── dedup.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── fluidanimate_8c_simlarge
-    │   │   │   ├── fluidanimate.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── gcc
-    │   │   │   ├── gcc.log
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── hmmer
-    │   │   │   ├── heartbeat
-    │   │   │   ├── hmmer.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── lbm
-    │   │   │   ├── heartbeat
-    │   │   │   ├── lbm.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── leslie3d
-    │   │   │   ├── heartbeat
-    │   │   │   ├── leslie3d.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── libquantum
-    │   │   │   ├── heartbeat
-    │   │   │   ├── libquantum.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── mcf
-    │   │   │   ├── heartbeat
-    │   │   │   ├── mcf.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── milc
-    │   │   │   ├── heartbeat
-    │   │   │   ├── milc.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── namd
-    │   │   │   ├── heartbeat
-    │   │   │   ├── namd.log
-    │   │   │   ├── out.cfg
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── sjeng
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── sjeng.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── soplex
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── soplex.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── streamcluster_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── streamcluster.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── swaptions_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── swaptions.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── x264_8c_simlarge
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── x264.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   ├── xalan
-    │   │   │   ├── heartbeat
-    │   │   │   ├── out.cfg
-    │   │   │   ├── xalan.log
-    │   │   │   ├── zsim-cmp.h5
-    │   │   │   ├── zsim-ev.h5
-    │   │   │   ├── zsim.h5
-    │   │   │   └── zsim.out
-    │   │   └── zsim.out
-    │   └── SRRIP
+    │   └── Mockingjay
     │       ├── blackscholes_8c_simlarge
     │       │   ├── blackscholes.log
     │       │   ├── heartbeat
@@ -5243,6 +4877,7 @@ Mimicking of Belady's min algorithm to improve cache replacement: https://ieeexp
     ├── zsim-ev.h5
     ├── zsim.h5
     └── zsim.out
+
 ```
 # Compilation and run process
 
