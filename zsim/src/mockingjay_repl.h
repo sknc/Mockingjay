@@ -10,7 +10,7 @@
 #include <bitset>
 #include <iostream>
 #include <iterator>
-#include <map>
+#include <unordered_map>
 #include <set>
 
 class MockingjayReplPolicy: public ReplPolicy {
@@ -18,7 +18,6 @@ class MockingjayReplPolicy: public ReplPolicy {
         uint32_t numLines;
         uint32_t ways;
         HashFamily* hf;
-        std::set<uint32_t> sampled_sets;
         bool cache_miss;
         struct SampledEntry {
             bool valid;
@@ -26,22 +25,22 @@ class MockingjayReplPolicy: public ReplPolicy {
             uint16_t pc_signature;
             uint8_t timestamp;
         };
-        std::map<uint32_t, SampledEntry*> sampled_cache;
-        std::map<uint16_t, uint8_t> rdp;
+        std::unordered_map<uint32_t, SampledEntry*> sampled_cache;
+        std::unordered_map<uint16_t, uint8_t> rdp;
         int8_t* etr_counters;
         uint8_t* set_timestamps;
         void update_sampled_cache(uint32_t id, const MemReq* req, uint32_t set) {
             uint16_t new_pc_signature = cache_miss ? ((req->pc & 0x7FF) << 1): (((req->pc & 0x7FF) << 1) + 1);
-            if(sampled_sets.find(set) != sampled_sets.end()) {
+            if((set & 0x3F) == ((set >> 5) & 0x3F)) {
                 uint16_t numShift = log2(numLines / ways);
                 uint32_t sampled_set = (req->lineAddr >> numShift) & 0xF;
                 uint64_t tag = ((req->lineAddr >> numShift) & 0x3FF0) >> 4;
                 bool sampleMiss = true;
                 bool invalidEntries = false;
                 uint8_t pred;
-                for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
+                for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; ++i) {
                     if(sampled_cache[set][i].valid) {
-                        pred = set_timestamps[set] < sampled_cache[set][i].timestamp ? ((1 << 8) + set_timestamps[set]) - sampled_cache[set][i].timestamp : set_timestamps[set] - sampled_cache[set][i].timestamp;
+                        pred = (set_timestamps[set] < sampled_cache[set][i].timestamp) ? (((1 << 8) + set_timestamps[set]) - sampled_cache[set][i].timestamp) : (set_timestamps[set] - sampled_cache[set][i].timestamp);
                         if(pred > INT8_MAX) {
                             pred = INT8_MAX;
                             update_rdp(id, sampled_cache[set][i].pc_signature, pred, true);
@@ -60,7 +59,7 @@ class MockingjayReplPolicy: public ReplPolicy {
                 if(sampleMiss) {
                     uint32_t bestCand = -1;
                     uint32_t bestScore = UINT32_MAX;
-                    for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
+                    for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; ++i) {
                         if(!sampled_cache[set][i].valid) {
                             sampled_cache[set][i].valid = true;
                             sampled_cache[set][i].address_tag = tag;
@@ -93,66 +92,46 @@ class MockingjayReplPolicy: public ReplPolicy {
         }
 
         void update_rdp(uint32_t id, uint16_t last_pc_signature, uint8_t pred, bool sampleMiss) { 
-            if(sampleMiss) 
+            if(sampleMiss || !rdp.count(last_pc_signature)) 
                 rdp[last_pc_signature] = pred;
-            
             else {
                 if(rdp.count(last_pc_signature)) {
-                    uint8_t old_pred = rdp[last_pc_signature];
-                    int diff = abs(old_pred - pred);
+                    int diff = abs(rdp[last_pc_signature] - pred);
                     float_t w = MIN(1, diff/6);
-                    uint8_t new_pred;
-                    if (pred > old_pred) {
-                        diff = round(old_pred + w);
-                        new_pred = diff;
-                        rdp[last_pc_signature] = new_pred;
-                    }
-                    else if(pred < old_pred) {
-                        diff = round(old_pred - w);
-                        new_pred = diff;
-                        rdp[last_pc_signature] = new_pred;
-                    }  
+                    rdp[last_pc_signature] = (pred > rdp[last_pc_signature]) ? round(rdp[last_pc_signature] + w) : round(rdp[last_pc_signature] - w);
                 }
-                else
-                    rdp[last_pc_signature] = pred;
             }
         }
 
     public:
         MockingjayReplPolicy(uint32_t _numLines, uint32_t _ways, HashFamily* _hf): numLines(_numLines), ways(_ways), hf(_hf) {
-            etr_counters = gm_calloc<int8_t>(numLines);
-            for(uint32_t i = 0; i < numLines; i++) {
+            etr_counters = gm_malloc<int8_t>(numLines);
+            for(uint32_t i = 0; i < numLines; ++i) {
                 etr_counters[i] = INT8_MIN;
             }
             uint32_t numSets = numLines / ways;
             set_timestamps = gm_calloc<uint8_t>(numSets);
             cache_miss = false;
-            std::vector<uint32_t> v;
-            for(uint32_t i = 0; i < numSets; i++) {
-                v.push_back(i);
-            }
-            std::random_shuffle(v.begin(), v.end());
-            v.resize(32);
-            for(std::vector<uint32_t>::iterator it = v.begin(); it != v.end(); ++it) {
-                uint32_t set = *it;
-                sampled_sets.insert(set);
-            }
-            for(std::set<uint32_t>::iterator it = sampled_sets.begin(); it != sampled_sets.end(); ++it) {
-                uint32_t set = *it;
-                sampled_cache[set] = new SampledEntry[80];
-                for(uint32_t i = 0; i < 80; i++) {
-                    sampled_cache[set][i].valid = false;
+            for(uint32_t i = 0; i < numSets; ++i) {
+                if((i & 0x3F) == ((i >> 5) & 0x3F)) {
+                    sampled_cache[i] = new SampledEntry[80];
+                    for(uint32_t j = 0; j < 80; ++j) {
+                        sampled_cache[i][j].valid = false;
+                    }
                 }
             }
-            v = std::vector<uint32_t>();
         }
 
         ~MockingjayReplPolicy(){
             gm_free(etr_counters);
+            gm_free(set_timestamps);
+            for(std::unordered_map<uint32_t, SampledEntry*>::iterator it = sampled_cache.begin(); it != sampled_cache.end(); ++it) {
+                delete it->second;
+            }
         }
         void update(uint32_t id, const MemReq* req) {
             uint32_t set = hf->hash(0, req->lineAddr) & ((numLines / ways) - 1);
-            for(uint32_t i = set * ways; i < set * ways + ways; i++) {
+            for(uint32_t i = set * ways; i < set * ways + ways; ++i) {
                 if(etr_counters[i] < INT8_MAX && etr_counters[i] > INT8_MIN && i != id)
                     etr_counters[i]--;
             }

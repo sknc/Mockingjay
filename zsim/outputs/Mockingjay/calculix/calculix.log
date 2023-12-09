@@ -1,6 +1,6 @@
-[H] Starting zsim, built Fri Dec  8 17:41:20 CST 2023 (rev no git repo)
+[H] Starting zsim, built Sat Dec  9 16:17:37 CST 2023 (rev no git repo)
 [H] Creating global segment, 1024 MBs
-[H] Global segment shmid = 11829297
+[H] Global segment shmid = 12648500
 [H] Deadlock detection ON
 [S 0] Started instance
 [S 0] Started RR scheduler, quantum=10000 phases
@@ -23,15 +23,15 @@
 [S 0] HDF5 backend: Created table, 3136 bytes/record, 1 records/write
 [S 0] Initialization complete
 [H] Attached to global heap
-[S 0] Started process, PID 23627
+[S 0] Started process, PID 137982
 [S 0] procMask: 0x0
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 0
 [S 0] FFI mode initialized, 2 ffiPoints
 [S 0] vDSO info initialized
-[S 0] FF control Thread TID 23632
+[S 0] FF control Thread TID 138010
 [S 0] Started contention simulation thread 0
-[S 0] FF thread 0 starting
 [S 0] Started scheduler watchdog thread
+[S 0] FF thread 0 starting
 
 ************************************************************
 
@@ -42,7 +42,7 @@ certain conditions, see gpl.htm
 
 ************************************************************
 
-[S 0] ffiPoint reached, 200000001 instrs, limit 200000000
+[S 0] ffiPoint reached, 200000006 instrs, limit 200000000
 [S 0] FFI: Exiting fast-forward
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 1
 [S 0] Thread 0 starting
@@ -51,8 +51,7 @@ Decascading the MPC's
 Renumbering the nodes to decrease the profile:
 [S 0] FFI: Entering fast-forward for process 0
 [S 0] Thread 0 entering fast-forward
-[S 0] Last ffiPoint reached, 1200000807 instrs, limit 1200000000
+[S 0] Last ffiPoint reached, 1200004905 instrs, limit 1200000000
 [S 0] Dumping termination stats
-[S 0] Finished scheduler watchdog thread
-[H] Child 23627 done
+[H] Child 137982 done
 [H] All children done, exiting
