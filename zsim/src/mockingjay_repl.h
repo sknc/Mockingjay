@@ -35,20 +35,16 @@ class MockingjayReplPolicy: public ReplPolicy {
             if(sampled_sets.find(set) != sampled_sets.end()) {
                 uint16_t numShift = log2(numLines / ways);
                 uint32_t sampled_set = (req->lineAddr >> numShift) & 0xF;
-                uint64_t tag = ((req->lineAddr >> numShift) >> 4) & 0x3FF0;
+                uint64_t tag = ((req->lineAddr >> numShift) & 0x3FF0) >> 4;
                 bool sampleMiss = true;
                 bool invalidEntries = false;
                 uint8_t pred;
                 for(uint32_t i = sampled_set * 5; i < sampled_set * 5 + 5; i++) {
                     if(sampled_cache[set][i].valid) {
-                        if(set_timestamps[set] < sampled_cache[set][i].timestamp) {
-                            uint16_t overflow = (1 << 8) + set_timestamps[set];
-                            pred = overflow - sampled_cache[set][i].timestamp;
-                        }
-                        else
-                            pred = set_timestamps[set] - sampled_cache[set][i].timestamp;
-                        if(pred > INT8_MAX + 1) {
-                            update_rdp(id, sampled_cache[set][i].pc_signature, pred, false);
+                        pred = set_timestamps[set] < sampled_cache[set][i].timestamp ? ((1 << 8) + set_timestamps[set]) - sampled_cache[set][i].timestamp : set_timestamps[set] - sampled_cache[set][i].timestamp;
+                        if(pred > INT8_MAX) {
+                            pred = INT8_MAX;
+                            update_rdp(id, sampled_cache[set][i].pc_signature, pred, true);
                             sampled_cache[set][i].valid = false;
                         }
                         else {
@@ -108,12 +104,12 @@ class MockingjayReplPolicy: public ReplPolicy {
                     uint8_t new_pred;
                     if (pred > old_pred) {
                         diff = round(old_pred + w);
-                        new_pred = diff > INT8_MAX ? INT8_MAX : diff;
+                        new_pred = diff;
                         rdp[last_pc_signature] = new_pred;
                     }
                     else if(pred < old_pred) {
                         diff = round(old_pred - w);
-                        new_pred = diff < 0 ? 0 : diff;
+                        new_pred = diff;
                         rdp[last_pc_signature] = new_pred;
                     }  
                 }
@@ -138,12 +134,14 @@ class MockingjayReplPolicy: public ReplPolicy {
             std::random_shuffle(v.begin(), v.end());
             v.resize(32);
             for(std::vector<uint32_t>::iterator it = v.begin(); it != v.end(); ++it) {
-                sampled_sets.insert(*it);
+                uint32_t set = *it;
+                sampled_sets.insert(set);
             }
             for(std::set<uint32_t>::iterator it = sampled_sets.begin(); it != sampled_sets.end(); ++it) {
-                sampled_cache[*it] = new SampledEntry[80];
-                for(int i = 0; i < 80; i++) {
-                    sampled_cache[*it][i].valid = false;
+                uint32_t set = *it;
+                sampled_cache[set] = new SampledEntry[80];
+                for(uint32_t i = 0; i < 80; i++) {
+                    sampled_cache[set][i].valid = false;
                 }
             }
             v = std::vector<uint32_t>();

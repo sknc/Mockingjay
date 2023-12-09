@@ -1,9 +1,9 @@
 Running on: linux2.cs.tamu.edu
-Start time: Sun Dec  3 19:20:57 2023
-Heartbeat time: Sun Dec  3 19:21:38 2023
+Start time: Fri Dec  8 17:41:41 2023
+Heartbeat time: Fri Dec  8 17:42:24 2023
 Stats since start:
- 54475 phases
- 544750000 cycles
- 13286585 cycles/s
-Stats since last heartbeat (1s):
- 11760000 cycles/s
+ 54694 phases
+ 546940000 cycles
+ 12719534 cycles/s
+Stats since last heartbeat (3s):
+ 8913333 cycles/s

@@ -1,6 +1,6 @@
-[H] Starting zsim, built Sun Dec  3 19:20:35 CST 2023 (rev no git repo)
+[H] Starting zsim, built Fri Dec  8 17:41:20 CST 2023 (rev no git repo)
 [H] Creating global segment, 1024 MBs
-[H] Global segment shmid = 11010053
+[H] Global segment shmid = 11829296
 [H] Deadlock detection ON
 [S 0] Started instance
 [S 0] Started RR scheduler, quantum=10000 phases
@@ -23,15 +23,15 @@
 [S 0] HDF5 backend: Created table, 3136 bytes/record, 1 records/write
 [S 0] Initialization complete
 [H] Attached to global heap
-[S 0] Started process, PID 164331
+[S 0] Started process, PID 23477
 [S 0] procMask: 0x0
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 0
 [S 0] FFI mode initialized, 2 ffiPoints
 [S 0] vDSO info initialized
-[S 0] FF control Thread TID 164337
-[S 0] Started scheduler watchdog thread
-[S 0] Started contention simulation thread 0
+[S 0] FF control Thread TID 23488
 [S 0] FF thread 0 starting
+[S 0] Started contention simulation thread 0
+[S 0] Started scheduler watchdog thread
 Delta   =     1.000000e-06
 Epsilon =     1.000000e-17
 Leaving algorithm
@@ -43,13 +43,13 @@ No scaling
 General simplifier
 Weight starter
 loading LP file /home/grads/s/sknc/casim-csce614/benchmarks/spec_cpu2006/data/soplex/pds-50.mps
-[S 0] ffiPoint reached, 200000000 instrs, limit 200000000
+[S 0] ffiPoint reached, 200000002 instrs, limit 200000000
 [S 0] FFI: Exiting fast-forward
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 1
 [S 0] Thread 0 starting
 [S 0] FFI: Entering fast-forward for process 0
 [S 0] Thread 0 entering fast-forward
-[S 0] Last ffiPoint reached, 1200001412 instrs, limit 1200000000
+[S 0] Last ffiPoint reached, 1200003019 instrs, limit 1200000000
 [S 0] Dumping termination stats
-[H] Child 164331 done
+[H] Child 23477 done
 [H] All children done, exiting

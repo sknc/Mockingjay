@@ -1,6 +1,6 @@
-[H] Starting zsim, built Sun Dec  3 19:20:35 CST 2023 (rev no git repo)
+[H] Starting zsim, built Fri Dec  8 17:41:20 CST 2023 (rev no git repo)
 [H] Creating global segment, 1024 MBs
-[H] Global segment shmid = 11010051
+[H] Global segment shmid = 11829293
 [H] Deadlock detection ON
 [S 0] Started instance
 [S 0] Started RR scheduler, quantum=10000 phases
@@ -23,15 +23,15 @@
 [S 0] HDF5 backend: Created table, 3136 bytes/record, 1 records/write
 [S 0] Initialization complete
 [H] Attached to global heap
-[S 0] Started process, PID 164266
+[S 0] Started process, PID 23351
 [S 0] procMask: 0x0
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 0
 [S 0] FFI mode initialized, 2 ffiPoints
 [S 0] vDSO info initialized
-[S 0] Started scheduler watchdog thread
-[S 0] FF control Thread TID 164271
-[S 0] Started contention simulation thread 0
 [S 0] FF thread 0 starting
+[S 0] FF control Thread TID 23356
+[S 0] Started contention simulation thread 0
+[S 0] Started scheduler watchdog thread
 SU3 with improved KS action
 Microcanonical simulation with refreshing
 MIMD version 6
@@ -47,7 +47,7 @@ iseed 1234
 LAYOUT = Hypercubes, options = EVENFIRST,
 Made lattice
 Made nn gathers
-[S 0] ffiPoint reached, 200000006 instrs, limit 200000000
+[S 0] ffiPoint reached, 200000005 instrs, limit 200000000
 [S 0] FFI: Exiting fast-forward
 [S 0] [0] Adjusting clocks, domain 0, de-ffwd 1
 [S 0] Thread 0 starting
@@ -55,8 +55,8 @@ Made 3nn gathers
 Finished setup
 [S 0] FFI: Entering fast-forward for process 0
 [S 0] Thread 0 entering fast-forward
-[S 0] Last ffiPoint reached, 1200004476 instrs, limit 1200000000
+[S 0] Last ffiPoint reached, 1200000550 instrs, limit 1200000000
 [S 0] Dumping termination stats
 [S 0] Finished scheduler watchdog thread
-[H] Child 164266 done
+[H] Child 23351 done
 [H] All children done, exiting
