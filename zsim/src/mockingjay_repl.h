@@ -83,12 +83,8 @@ class MockingjayReplPolicy: public ReplPolicy {
                 }
                 set_timestamps[set]++;
             }
-            if(rdp.count(new_pc_signature)) {
-                if(rdp[new_pc_signature] > 104) 
-                    etr_counters[id] = INT8_MAX;
-            else
-                etr_counters[id] = rdp[new_pc_signature];
-            }
+            if(rdp.count(new_pc_signature)) 
+                etr_counters[id] = rdp[new_pc_signature] > 104 ? INT8_MAX : rdp[new_pc_signature];
         }
 
         void update_rdp(uint32_t id, uint16_t last_pc_signature, uint8_t pred, bool sampleMiss) { 
